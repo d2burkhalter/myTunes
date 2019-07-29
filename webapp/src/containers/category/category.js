@@ -16,14 +16,14 @@ class Category extends Component {
             collapse: true,
         };
     }
-    toggle() {
+    toggle = () => {
         this.setState({
             collapse: !this.state.collapse
         });
     }
     displayItem(item) {
         return (
-            <Media key={item.name}>
+            <Media>
                 <Media left >
                     <img src={item.artwork} alt="pic" style={{marginRight : "1em"}}/>
                 </Media>
@@ -40,13 +40,13 @@ class Category extends Component {
 
     render() {
         return(
-            <Jumbotron key={this.props.categoryName}>
+            <Jumbotron>
                 <Row>
                     <h2>{this.props.categoryName.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</h2>
                     <Button color="info" onClick={this.toggle} style={{margin : "0 0 1em 1em"}}>{(!this.state.collapse) ? "▼" : "▲"}</Button>
                 </Row>
                     <Collapse isOpen={this.state.collapse}>
-                    {this.props.categoryData.map(item => {return <Card style={{margin : "1em"}}>{this.displayItem(item)}</Card>
+                    {this.props.categoryData.map(item => {return <Card key={item.id} style={{padding : "5px"}}>{this.displayItem(item)}</Card>
                     })}
                 </Collapse>
             </Jumbotron>

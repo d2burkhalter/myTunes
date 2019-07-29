@@ -1,22 +1,25 @@
 var express = require("express")
 var app = express()
 var request = require("request")
+var cors = require('cors')
 
-app.listen(3000, ()=> {
-    console.log("running on port 3000")
+app.use(cors())
+
+app.listen(8675, ()=> {
+    console.log("running on port 8675")
 })
 
 app.get("/", (req, res) => {
     let searchString = req.originalUrl
     searchString = searchString.slice(1,searchString.length)
-    console.log(searchString)
     const url = "https://itunes.apple.com/search" + searchString
-    let options = {
+    console.log("calling: " + url)
+    const options = {
         url: url,
         json: true
     }
     request(options, function(error, response, body) {
-        if(!error && response.statusCode == 200) {
+        if(!error && response.statusCode === 200) {
             res.json(processResponse(body.results))
         } else {
             res.json(error)

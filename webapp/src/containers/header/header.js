@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
 import {
   Collapse,
-  CardBody,
-  Card,
   Container,
   Row,
   Col,
   Jumbotron,
   Button, 
   Input,
-  InputGroup
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText
 } from 'reactstrap';
+import AdvancedOptions from '../advancedOptions/advancedOptions.js'
+var rp = require("request-promise")
 
 class Header extends Component {
   constructor(props) {
@@ -19,49 +21,88 @@ class Header extends Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       collapse: false,
+      hasText: false,
+      searchText: "",
+      options: ""
     };
   }
-  toggle() {
+  toggle = () => {
     this.setState({
       collapse: !this.state.collapse
     });
   }
-
-render() {
-  return(
-    <Jumbotron>
-      <Container>
-        <Row>
-          <Col>
-            <h1>myTunes</h1>
-            <Row style={{marginBottom: "1em"}}>
-              <InputGroup>
-                <Input placeholder="search"/>
-                <Button
-                color="secondary"
-                size="large"
-                >>
-                </Button>
-              </InputGroup>
-            </Row>
-            <Row>
-              <h5 style={{marginRight: "1em"}}>Advanced Search</h5>
-              <Button color="info" onClick={this.toggle} >{(!this.state.collapse) ? "▼" : "▲"}</Button>
-            </Row>
-            <Row>
-              <Collapse isOpen={this.state.collapse}>
-                <Card>
-                  <CardBody>
-                    TODO ADVANCED SEARCH OPTIONS
-                  </CardBody>
-                </Card>
-              </Collapse>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-    </Jumbotron>
-    )
+  handleTyping = (event) => {
+    let newSearchText = event.target.value
+    this.setState({
+      searchText: newSearchText,
+      hasText: newSearchText.length > 0
+    })
   }
+  handleButton = async () => {
+    const text = this.state.searchText
+    const url = "http://localhost:8675/?term=" + text
+    let options = {
+        url: url,
+        json: true
+    }
+    this.props.loadingCallback(true)
+    let data
+    await rp(options)
+      .then(function(body) {
+        console.log(body)
+        data = body
+      })
+      .catch(function(err){
+        console.log(err)
+      })
+    this.props.dataCallback(data)
+    this.props.loadingCallback(false)
+  }
+  callBackOptions = (newOptions) => {
+    this.setState({
+      options: newOptions
+    })
+  }
+
+  render() {
+    return(
+      <Jumbotron>
+        <Container>
+          <Row>
+            <Col>
+              <h1>myTunes</h1>
+              <Row style={{marginBottom: "1em"}}>
+                <InputGroup>
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>Search</InputGroupText>
+                  </InputGroupAddon>
+                  <Input 
+                    placeholder="Start typing ..." 
+                    value={this.state.searchText} 
+                    onChange={this.handleTyping}/>
+                  <Button 
+                    color="secondary" 
+                    size="large" 
+                    disabled={!this.state.hasText} 
+                    onClick={this.handleButton}>
+                    >
+                  </Button>
+                </InputGroup>
+              </Row>
+              <Row>
+                <h5>Advanced Search</h5>
+                <Button color="info" onClick={this.toggle} style={{margin : "0 0 1em 1em"}}>{(!this.state.collapse) ? "▼" : "▲"}</Button>
+              </Row>
+              <Row>
+                <Collapse isOpen={this.state.collapse}>
+                  <AdvancedOptions optionsCallback={this.callBackOptions}/>
+                </Collapse>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+      </Jumbotron>
+      )
+    }
 }
 export default Header;
