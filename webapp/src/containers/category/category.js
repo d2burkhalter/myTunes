@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {
   Collapse,
-  Card,
   Row,
   Jumbotron,
-  Button, 
-  Media
+  Button,
 } from 'reactstrap';
+import CardItem from '../../components/cardItem/cardItem.js';
 
 class Category extends Component {
   constructor(props) {
@@ -21,23 +20,6 @@ class Category extends Component {
       collapse: !this.state.collapse
     });
   }
-  displayItem(item) {
-    return (
-      <Media>
-        <Media left >
-        <img src={item.artwork} alt="pic" style={{marginRight : "1em"}}/>
-        </Media>
-      <Media body>
-        <Media heading>
-          {item.name}
-        </Media>
-          <p>{item.genre}</p>
-          <a href={item.url}>iTunes link</a>
-        </Media>
-      </Media>
-    )
-  }
-
   render() {
   return(
     <Jumbotron>
@@ -48,11 +30,8 @@ class Category extends Component {
       <Collapse isOpen={this.state.collapse}>
         {this.props.categoryData
           .map(item => {
-            return (
-              <Card key={item.id} style={{padding : "5px"}}>
-                {this.displayItem(item)}
-              </Card>
-        )})}
+            return <CardItem key={item.id+"category"} item={item} likeCallback={this.props.likeCallback}/>
+          })}
       </Collapse>
     </Jumbotron>
     )

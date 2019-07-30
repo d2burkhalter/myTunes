@@ -51,7 +51,6 @@ class Header extends Component {
     let data
     await rp(options)
       .then(function(body) {
-        console.log(body)
         data = body
       })
       .catch(function(err){
