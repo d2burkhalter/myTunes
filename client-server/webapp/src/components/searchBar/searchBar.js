@@ -3,7 +3,7 @@ import {Row, InputGroup, InputGroupAddon, InputGroupText, Input, Button} from 'r
 
 function SearchBar(props) {
   return(
-    <Row style={{marginBottom: "1em"}}>
+    <Row style={{marginBottom: "1em", boxShadow: "5px 2px 5px black"}}>
       <InputGroup>
         <InputGroupAddon addonType="prepend">
           <InputGroupText>Search</InputGroupText>
