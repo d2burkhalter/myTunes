@@ -11,7 +11,12 @@ function SearchBar(props) {
         <Input 
           placeholder="Start typing ..." 
           value={props.searchText} 
-          onChange={props.handleTyping}/>
+          onChange={props.handleTyping}
+          onKeyPress={(e)=> {
+            if(e.key === "Enter") {
+              props.handleButton()
+          }}}
+          />
         <Button 
           color="secondary" 
           size="large" 
