@@ -16,32 +16,34 @@ var rp = require("request-promise")
 
 class Header extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.toggle = this.toggle.bind(this);
+    this.toggle = this.toggle.bind(this)
+    this.handleTyping = this.handleTyping.bind(this)
+    this.handleButton = this.handleButton.bind(this)
+    this.callBackOptions = this.callBackOptions.bind(this)
     this.state = {
       collapse: false,
       hasText: false,
       searchText: "",
       options: ""
-    };
+    }
   }
   toggle = () => {
     this.setState({
       collapse: !this.state.collapse
-    });
+    })
   }
   handleTyping = (event) => {
-    let newSearchText = event.target.value
+    const newSearchText = event.target.value
     this.setState({
       searchText: newSearchText,
       hasText: newSearchText.length > 0
     })
   }
   handleButton = async () => {
-    const text = this.state.searchText
-    const url = "http://localhost:8675/?term=" + text
-    let options = {
+    const url = "http://localhost:8675/?term=" + this.state.searchText + this.state.options
+    const options = {
         url: url,
         json: true
     }

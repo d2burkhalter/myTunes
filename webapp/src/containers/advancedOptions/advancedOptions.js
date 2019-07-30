@@ -1,96 +1,109 @@
 import React, {Component} from 'react'
-import {Form, Input, Label, FormGroup} from 'reactstrap'
+import {Col, Row ,Form, Input, Label, FormGroup} from 'reactstrap'
 import staticData from "./apiData.json"
 
 class AdvancedOptions extends Component {
 
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props)
+    this.handleMediaSelect.bind(this)
+    this.handleEntitySelect.bind(this)
+    this.handleAttributeSelect.bind(this)
 
-        this.state = {
-            mediaSelected : "all",
-            entitySelected : "-",
-            attributeSelected: "-"
-        }
+    this.state = {
+      mediaSelected : "all",
+      entitySelected : "-",
+      attributeSelected: "-"
     }
+  }
 
-    displayType = () => {
-        const types = staticData["media"]
-        return (
-            <Input type="select" name="select" id="mediaSelector" onChange={this.handleMediaSelect}>
-            {types.map(type => {
-                return <option key={type} value={type}>{type}</option>
-            })}
-            </Input>
-        )
-    }
+  displayType = () => {
+    const types = staticData["media"]
+    return (
+      <Input type="select" name="select" id="mediaSelector" onChange={this.handleMediaSelect}>
+        {types.map(type => {
+          return <option key={type} value={type}>{type}</option>
+        })}
+      </Input>
+    )
+  }
 
-    displayEntities = () => {
-        const entities = staticData["entity"][this.state.mediaSelected]
-        return (
-            <Input type="select" name="select" id="entitySelector" onChange={this.handleSelect}>
-                {entities.map(entity => {
-                    return <option key={entity} value={"entitySelected "+entity}>{entity}</option>
-                })}
-            </Input>
-        )
-    }
+  displayEntities = () => {
+    const entities = staticData["entity"][this.state.mediaSelected]
+    return (
+      <Input type="select" name="select" id="entitySelector" onChange={this.handleEntitySelect} value={this.state.entitySelected}>
+        {entities.map(entity => {
+          return <option key={entity} value={entity}>{entity}</option>
+        })}
+      </Input>
+    )
+  }
 
-    displayTypeAttributes = () => {
-        const attributes = staticData["attribute"][this.state.mediaSelected]
-        return (
-            <Input type="select" name="select" id="attributeSelector" onChange={this.handleSelect}>
-                {attributes.map(attribute => {
-                    return <option key={attribute} value={"attributeSelected "+attribute}>{attribute}</option>
-                })}
-            </Input>
-        )
-    }
+  displayTypeAttributes = () => {
+    const attributes = staticData["attribute"][this.state.mediaSelected]
+    return (
+      <Input type="select" name="select" id="attributeSelector" onChange={this.handleAttributeSelect} value={this.state.attributeSelected}>
+        {attributes.map(attribute => {
+          return <option key={attribute} value={attribute}>{attribute}</option>
+        })}
+      </Input>
+    )
+  }
 
-    handleMediaSelect = (event) => {
-        this.setState({
-            mediaSelected: event.target.value,
-            entitySelected: "-",
-            attributeSelected: "-"
-        }, this.handleOptionsChange())
-    }
+  handleMediaSelect = (event) => {
+    this.setState({
+      mediaSelected: event.target.value,
+      entitySelected: "-",
+      attributeSelected: "-"
+    }, this.handleOptionsChange)
+  }
 
-    handleSelect = (event) => {
-        const stringArray = event.target.value.split(" ")
-        const key = stringArray[0]
-        const value = stringArray[1]
-        console.log(stringArray)
-        this.setState({
-            [key]: value
-        }, this.handleOptionsChange())
-    }
+  handleEntitySelect = (event) => {
+    this.setState({
+      entitySelected: event.target.value
+    }, this.handleOptionsChange)
+  }
 
-    handleOptionsChange = () => {
-        let searchOptions = "&media=";
-        searchOptions+=this.state.mediaSelected
-        if(this.state.entitySelected !== "-") searchOptions+="&entity="+this.state.entitySelected
-        if(this.state.attributeSelected !== "-") searchOptions+="&attribute="+this.state.mediaSelected
-        this.props.optionsCallback(searchOptions)
-    }
+  handleAttributeSelect = (event) => {
+    this.setState({
+      attributeSelected: event.target.value
+    }, this.handleOptionsChange)
+  }
 
-    render() {
-        return (
-            <Form>
-                <FormGroup>
-                    <Label for="mediaSelector">Media Type</Label>
-                    {this.displayType()}
-                </FormGroup>
-                <FormGroup>
-                    <Label for="entitySelector">Entity</Label>
-                    {this.displayEntities()}
-                </FormGroup>
-                <FormGroup>
-                    <Label for="attributeSelector">Attribute</Label>
-                    {this.displayTypeAttributes()}
-                </FormGroup>
-            </Form>
-        )
-    }
+  handleOptionsChange = () => {
+    let searchOptions = "&media=";
+    searchOptions+=this.state.mediaSelected
+    if(this.state.entitySelected !== "-") searchOptions+="&entity="+this.state.entitySelected
+    if(this.state.attributeSelected !== "-") searchOptions+="&attribute="+this.state.attributeSelected
+    this.props.optionsCallback(searchOptions)
+  }
+
+  render() {
+    return (
+      <Form>
+        <Row form>
+          <Col>
+            <FormGroup>
+              <Label for="mediaSelector">Media Type</Label>
+              {this.displayType()}
+            </FormGroup>
+          </Col>
+          <Col>
+            <FormGroup>
+              <Label for="entitySelector">Entity</Label>
+              {this.displayEntities()}
+            </FormGroup>
+          </Col>
+          <Col>
+            <FormGroup>
+              <Label for="attributeSelector">Attribute</Label>
+              {this.displayTypeAttributes()}
+            </FormGroup>
+          </Col>
+        </Row>
+      </Form>
+    )
+  }
 }
 
 export default AdvancedOptions;
