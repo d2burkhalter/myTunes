@@ -4,7 +4,7 @@ import {Card,Media} from 'reactstrap'
 
 function CardItem(props) {
   return(
-    <Card style={{padding : "5px", marginBottom: "2px"}}>
+    <Card style={{padding : "5px", marginBottom: "2px", boxShadow: "2px 2px 2px black"}}>
       <Media>
         <Media left >
           <img src={props.item.artwork} alt="pic" style={{marginRight : "1em"}}/>

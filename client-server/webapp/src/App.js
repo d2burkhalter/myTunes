@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Favorites from './containers/favorites/favorites.js'
 import Category from './containers/category/category.js';
 import Header from './containers/header/header.js'
-import {Spinner} from 'reactstrap'
+import {Spinner, Alert} from 'reactstrap'
 import FadeBottom from './components/fadeBottom/fadeBottom.js';
 
 class App extends Component {
@@ -14,6 +14,7 @@ class App extends Component {
           inputData: {},
           isLoading: false,
           showError: false,
+          error: [],
           favoriteData : []
       };
   }
@@ -27,9 +28,11 @@ class App extends Component {
   }
 
   callBackData = (newData) => {
+    try {
     if(Object.entries(newData).length === 0 && newData.constructor === Object) {
       this.setState({
         showError: true,
+        error:<Alert color="warning">No results try another search</Alert>,
         inputData: {}
       })
     } else {
@@ -43,6 +46,13 @@ class App extends Component {
       this.setState({
         inputData: newData,
         showError: false
+      })
+    }} catch (error) {
+      console.log("hello")
+      this.setState({
+        showError: true,
+      error:<Alert color="danger">Server error check that backend is running</Alert>,
+        inputData: {}
       })
     }
   }
@@ -95,7 +105,7 @@ class App extends Component {
   render() {
       return (
           <div style={{backgroundColor: "silver"}}>
-              <Header dataCallback={this.callBackData} loadingCallback={this.callBackLoading} displayError={this.state.showError}/>
+              <Header dataCallback={this.callBackData} loadingCallback={this.callBackLoading} displayError={this.state.showError} error={this.state.error}/>
               <FadeBottom/>
               {(this.state.favoriteData.length > 0) ? <Favorites likeCallback={this.callBackLike} favoriteData={this.state.favoriteData}/> : null}
               {(this.state.isLoading) ? 
