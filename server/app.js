@@ -6,7 +6,7 @@ var cors = require('cors')
 app.use(cors())
 
 app.listen(8675, ()=> {
-    console.log("running on port 8675")
+    console.log("Backend is running on port 8675")
 })
 
 app.get("/", (req, res) => {
