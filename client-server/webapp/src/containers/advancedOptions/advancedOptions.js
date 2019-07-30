@@ -68,7 +68,7 @@ class AdvancedOptions extends Component {
               <Label for="attributeSelected">Attribute</Label>
               <OptionSelect name="attributeSelected" 
                 handleSelect={this.handleSelected} 
-                value={this.state.attributeSelected} 
+                value={this.state.attributeSelected}
                 data={staticData["attribute"][this.state.mediaSelected]}/>
             </FormGroup>
           </Col>

@@ -7,7 +7,7 @@ function OptionSelect(props) {
       name="select" 
       id={props.name} 
       onChange={(e) => {props.handleSelect(props.name, e)}}
-      value={props.entitySelected}>
+      value={props.value}>
       {props.data.map(item => {
         return <option key={item+props.name} value={item}>{item}</option>
       })}
