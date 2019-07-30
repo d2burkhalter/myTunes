@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+  Alert,
   Collapse,
   Container,
   Row,
@@ -72,6 +73,7 @@ class Header extends Component {
                 handleTyping={this.handleTyping} 
                 hasText={this.state.hasText} 
                 handleButton={this.handleButton}/>
+                <Alert color="warning" hidden={!this.props.displayError}>No results try another search</Alert>
               <Row>
                 <h5>Advanced Search</h5>
                 <CollapseButton toggle={this.toggle} collapse={this.state.collapse}/>

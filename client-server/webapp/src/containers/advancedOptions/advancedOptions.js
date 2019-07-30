@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Col, Row ,Form, Label, FormGroup} from 'reactstrap'
-import staticData from "./apiData.json.js"
+import staticData from "./apiData.json"
 import OptionSelect from '../../components/optionSelect/optionSelect.js';
 
 class AdvancedOptions extends Component {

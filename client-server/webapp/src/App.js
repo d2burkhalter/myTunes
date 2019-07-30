@@ -13,6 +13,7 @@ class App extends Component {
           hasData: true,
           inputData: {},
           isLoading: false,
+          showError: false,
           favoriteData : []
       };
   }
@@ -25,21 +26,25 @@ class App extends Component {
     })
   }
 
-  loadData = () => {
-    //populate like fields in new data
-    const data = this.state.inputData
-    const favData = this.state.favoriteData
-    for(let key in data) {
-      data[key].forEach(item => {
-        return (favData.findIndex(favorite => favorite.id === item.id) > -1) ? item.isLiked=true : item.isLiked=false;
+  callBackData = (newData) => {
+    if(Object.entries(newData).length === 0 && newData.constructor === Object) {
+      this.setState({
+        showError: true,
+        inputData: {}
+      })
+    } else {
+      const data = newData
+      const favData = this.state.favoriteData
+      for(let key in data) {
+        data[key].forEach(item => {
+          return (favData.findIndex(favorite => favorite.id === item.id) > -1) ? item.isLiked=true : item.isLiked=false;
+        })
+      }
+      this.setState({
+        inputData: newData,
+        showError: false
       })
     }
-  }
-
-  callBackData = (newData) => {
-    this.setState({
-      inputData: newData
-    }, this.loadData)
   }
 
   callBackLoading = (status) => {
@@ -90,7 +95,7 @@ class App extends Component {
   render() {
       return (
           <div style={{backgroundColor: "silver"}}>
-              <Header dataCallback={this.callBackData} loadingCallback={this.callBackLoading}/>
+              <Header dataCallback={this.callBackData} loadingCallback={this.callBackLoading} displayError={this.state.showError}/>
               <FadeBottom/>
               {(this.state.favoriteData.length > 0) ? <Favorites likeCallback={this.callBackLike} favoriteData={this.state.favoriteData}/> : null}
               {(this.state.isLoading) ? 
