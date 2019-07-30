@@ -10,8 +10,8 @@ app.listen(8675, ()=> {
 })
 
 app.get("/", (req, res) => {
-    let searchString = req.originalUrl
-    searchString = searchString.slice(1,searchString.length)
+    const inputURL = req.originalUrl;
+    const searchString = inputURL.slice(1,inputURL.length)
     const url = "https://itunes.apple.com/search" + searchString
     console.log("calling: " + url)
     const options = {
@@ -28,9 +28,9 @@ app.get("/", (req, res) => {
 })
 
 function processResponse(inputArray) {
-    var resultDict = {}
+    let resultDict = {}
     inputArray.forEach( (result) => {
-        var item = {
+        let item = {
             "id" : result.trackId,
             "name" : result.trackName,
             "artwork" : result.artworkUrl100,

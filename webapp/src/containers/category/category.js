@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {
   Collapse,
-  Row,
-  Jumbotron,
-  Button,
+  Row
 } from 'reactstrap';
 import CardItem from '../../components/cardItem/cardItem.js';
+import Panel from '../../components/panel/panel.js';
+import CollapseButton from '../../components/collapseButton/collapseButton.js';
 
 class Category extends Component {
   constructor(props) {
@@ -22,10 +22,10 @@ class Category extends Component {
   }
   render() {
   return(
-    <Jumbotron>
+    <Panel>
       <Row>
         <h2>{this.props.categoryName.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</h2>
-        <Button color="info" onClick={this.toggle} style={{margin : "0 0 1em 1em"}}>{(!this.state.collapse) ? "▼" : "▲"}</Button>
+        <CollapseButton toggle={this.toggle} collapse={this.state.collapse}/>
       </Row>
       <Collapse isOpen={this.state.collapse}>
         {this.props.categoryData
@@ -33,7 +33,7 @@ class Category extends Component {
             return <CardItem key={item.id+"category"} item={item} likeCallback={this.props.likeCallback}/>
           })}
       </Collapse>
-    </Jumbotron>
+    </Panel>
     )
   }
 }

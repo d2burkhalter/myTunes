@@ -3,6 +3,7 @@ import Favorites from './containers/favorites/favorites.js'
 import Category from './containers/category/category.js';
 import Header from './containers/header/header.js'
 import {Spinner} from 'reactstrap'
+import FadeBottom from './components/fadeBottom/fadeBottom.js';
 
 class App extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class App extends Component {
           favoriteData : []
       };
   }
+
   componentDidMount() {
     const store = window.localStorage
     const startFaves = JSON.parse(store.getItem("storedData") || "[]")
@@ -22,6 +24,7 @@ class App extends Component {
       favoriteData: startFaves
     })
   }
+
   loadData = () => {
     //populate like fields in new data
     const data = this.state.inputData
@@ -32,16 +35,19 @@ class App extends Component {
       })
     }
   }
+
   callBackData = (newData) => {
     this.setState({
       inputData: newData
     }, this.loadData)
   }
+
   callBackLoading = (status) => {
     this.setState({
       isLoading: status
     })
   }
+
   callBackLike = (likeInfo, isLiked) => {
     const curLikes = this.state.favoriteData
     const curData = this.state.inputData
@@ -71,6 +77,7 @@ class App extends Component {
       inputData: newData
     })
   }
+
   displayData(data) {
     var output = []
     for(var key in data) {
@@ -79,10 +86,12 @@ class App extends Component {
     }
     return output
   }
+
   render() {
       return (
-          <div>
+          <div style={{backgroundColor: "silver"}}>
               <Header dataCallback={this.callBackData} loadingCallback={this.callBackLoading}/>
+              <FadeBottom/>
               {(this.state.favoriteData.length > 0) ? <Favorites likeCallback={this.callBackLike} favoriteData={this.state.favoriteData}/> : null}
               {(this.state.isLoading) ? 
                 <Spinner color="secondary" style={{width: "25vw", height: "25vw", position: "absolute", left: "35%", top: "40%"}}/>

@@ -3,15 +3,11 @@ import {
   Collapse,
   Container,
   Row,
-  Col,
-  Jumbotron,
-  Button, 
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText
+  Col
 } from 'reactstrap';
 import AdvancedOptions from '../advancedOptions/advancedOptions.js'
+import SearchBar from '../../components/searchBar/searchBar.js';
+import CollapseButton from '../../components/collapseButton/collapseButton.js';
 var rp = require("request-promise")
 
 class Header extends Component {
@@ -67,32 +63,18 @@ class Header extends Component {
 
   render() {
     return(
-      <Jumbotron>
         <Container>
-          <Row>
+          <h1 style={{paddingBottom: "0.5em"}}>myTunes</h1>
+          <Row style={{width: "90%", margin: "auto"}}>
             <Col>
-              <h1>myTunes</h1>
-              <Row style={{marginBottom: "1em"}}>
-                <InputGroup>
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>Search</InputGroupText>
-                  </InputGroupAddon>
-                  <Input 
-                    placeholder="Start typing ..." 
-                    value={this.state.searchText} 
-                    onChange={this.handleTyping}/>
-                  <Button 
-                    color="secondary" 
-                    size="large" 
-                    disabled={!this.state.hasText} 
-                    onClick={this.handleButton}>
-                    >
-                  </Button>
-                </InputGroup>
-              </Row>
+              <SearchBar 
+                searchText={this.state.searchText} 
+                handleTyping={this.handleTyping} 
+                hasText={this.state.hasText} 
+                handleButton={this.handleButton}/>
               <Row>
                 <h5>Advanced Search</h5>
-                <Button color="info" onClick={this.toggle} style={{margin : "0 0 1em 1em"}}>{(!this.state.collapse) ? "▼" : "▲"}</Button>
+                <CollapseButton toggle={this.toggle} collapse={this.state.collapse}/>
               </Row>
               <Row>
                 <Collapse isOpen={this.state.collapse}>
@@ -102,7 +84,6 @@ class Header extends Component {
             </Col>
           </Row>
         </Container>
-      </Jumbotron>
       )
     }
 }

@@ -1,73 +1,35 @@
 import React, {Component} from 'react'
-import {Col, Row ,Form, Input, Label, FormGroup} from 'reactstrap'
+import {Col, Row ,Form, Label, FormGroup} from 'reactstrap'
 import staticData from "./apiData.json"
+import OptionSelect from '../../components/optionSelect/optionSelect.js';
 
 class AdvancedOptions extends Component {
 
   constructor(props) {
     super(props)
-    this.handleMediaSelect.bind(this)
-    this.handleEntitySelect.bind(this)
-    this.handleAttributeSelect.bind(this)
+    this.handleSelected = this.handleSelected.bind(this)
 
     this.state = {
       mediaSelected : "all",
       entitySelected : "-",
-      attributeSelected: "-"
+      attributeSelected: "-",
+      limitSelected: "-"
     }
   }
 
-  displayType = () => {
-    const types = staticData["media"]
-    return (
-      <Input type="select" name="select" id="mediaSelector" onChange={this.handleMediaSelect}>
-        {types.map(type => {
-          return <option key={type} value={type}>{type}</option>
-        })}
-      </Input>
-    )
-  }
-
-  displayEntities = () => {
-    const entities = staticData["entity"][this.state.mediaSelected]
-    return (
-      <Input type="select" name="select" id="entitySelector" onChange={this.handleEntitySelect} value={this.state.entitySelected}>
-        {entities.map(entity => {
-          return <option key={entity} value={entity}>{entity}</option>
-        })}
-      </Input>
-    )
-  }
-
-  displayTypeAttributes = () => {
-    const attributes = staticData["attribute"][this.state.mediaSelected]
-    return (
-      <Input type="select" name="select" id="attributeSelector" onChange={this.handleAttributeSelect} value={this.state.attributeSelected}>
-        {attributes.map(attribute => {
-          return <option key={attribute} value={attribute}>{attribute}</option>
-        })}
-      </Input>
-    )
-  }
-
-  handleMediaSelect = (event) => {
-    this.setState({
-      mediaSelected: event.target.value,
-      entitySelected: "-",
-      attributeSelected: "-"
-    }, this.handleOptionsChange)
-  }
-
-  handleEntitySelect = (event) => {
-    this.setState({
-      entitySelected: event.target.value
-    }, this.handleOptionsChange)
-  }
-
-  handleAttributeSelect = (event) => {
-    this.setState({
-      attributeSelected: event.target.value
-    }, this.handleOptionsChange)
+  handleSelected = (key, event) => {
+    if(key === "mediaSelected") {
+      this.setState({
+        mediaSelected: event.target.value,
+        entitySelected: "-",
+        attributeSelected: "-",
+        limitSelected: "-"
+      }, this.handleOptionsChange)
+    } else {
+      this.setState({
+        [key] : event.target.value
+      }, this.handleOptionsChange)
+    }
   }
 
   handleOptionsChange = () => {
@@ -75,6 +37,7 @@ class AdvancedOptions extends Component {
     searchOptions+=this.state.mediaSelected
     if(this.state.entitySelected !== "-") searchOptions+="&entity="+this.state.entitySelected
     if(this.state.attributeSelected !== "-") searchOptions+="&attribute="+this.state.attributeSelected
+    if(this.state.limitSelected !== "-") searchOptions+="&limit="+this.state.limitSelected
     this.props.optionsCallback(searchOptions)
   }
 
@@ -82,22 +45,40 @@ class AdvancedOptions extends Component {
     return (
       <Form>
         <Row form>
-          <Col>
+          <Col xs={{ size: 'auto', offset: 0 }}>
             <FormGroup>
-              <Label for="mediaSelector">Media Type</Label>
-              {this.displayType()}
+              <Label for="mediaSelected">Media Type</Label>
+              <OptionSelect name="mediaSelected" 
+                handleSelect={this.handleSelected} 
+                value={this.state.mediaSelected} 
+                data={staticData["media"]}/>
             </FormGroup>
           </Col>
-          <Col>
+          <Col xs={{ size: 'auto', offset: 0 }}>
             <FormGroup>
-              <Label for="entitySelector">Entity</Label>
-              {this.displayEntities()}
+              <Label for="entitySelected">Entity</Label>
+              <OptionSelect name="entitySelected" 
+                handleSelect={this.handleSelected} 
+                value={this.state.entitySelected} 
+                data={staticData["entity"][this.state.mediaSelected]}/>
             </FormGroup>
           </Col>
-          <Col>
+          <Col xs={{ size: 'auto', offset: 0 }}>
             <FormGroup>
-              <Label for="attributeSelector">Attribute</Label>
-              {this.displayTypeAttributes()}
+              <Label for="attributeSelected">Attribute</Label>
+              <OptionSelect name="attributeSelected" 
+                handleSelect={this.handleSelected} 
+                value={this.state.attributeSelected} 
+                data={staticData["attribute"][this.state.mediaSelected]}/>
+            </FormGroup>
+          </Col>
+          <Col xs={{ size: 'auto', offset: 0 }}>
+            <FormGroup>
+              <Label for="limitSelected">Limit</Label>
+              <OptionSelect name="limitSelected" 
+                handleSelect={this.handleSelected} 
+                value={this.state.limitSelected} 
+                data={staticData["limits"]}/>
             </FormGroup>
           </Col>
         </Row>

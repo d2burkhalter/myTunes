@@ -1,11 +1,11 @@
 import React, {Component} from "react"
 import {
   Collapse,
-  Row,
-  Jumbotron,
-  Button,
+  Row
 } from 'reactstrap';
 import CardItem from '../../components/cardItem/cardItem.js';
+import Panel from "../../components/panel/panel.js";
+import CollapseButton from "../../components/collapseButton/collapseButton.js";
 
 class Favorites extends Component {
   constructor(props) {
@@ -22,10 +22,10 @@ class Favorites extends Component {
   }
   render() {
     return (
-      <Jumbotron>
+      <Panel>
         <Row>
           <h2>Favorites</h2>
-          <Button color="info" onClick={this.toggle} style={{margin : "0 0 1em 1em"}}>{(!this.state.collapse) ? "▼" : "▲"}</Button>
+          <CollapseButton toggle={this.toggle} collapse={this.state.collapse}/>
         </Row>
         <Collapse isOpen={this.state.collapse}>
           {this.props.favoriteData
@@ -33,7 +33,7 @@ class Favorites extends Component {
               return <CardItem key={item.id+"favorite"} item={item} likeCallback={this.props.likeCallback}/>
             })}
         </Collapse>
-      </Jumbotron>
+      </Panel>
     )
   }
 }

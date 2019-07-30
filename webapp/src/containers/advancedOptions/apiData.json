@@ -22,5 +22,6 @@
         "tvShow":["-", "genreIndex", "tvEpisodeTerm", "showTerm", "tvSeasonTerm", "ratingIndex", "descriptionTerm"],
         "software":["-", "softwareDeveloper"],
         "all" :["-", "actorTerm", "languageTerm", "allArtistTerm", "tvEpisodeTerm", "shortFilmTerm", "directorTerm", "releaseYearTerm", "titleTerm", "featureFilmTerm", "ratingIndex", "keywordsTerm", "descriptionTerm", "authorTerm", "genreIndex", "mixTerm", "allTrackTerm", "artistTerm", "composerTerm", "tvSeasonTerm", "producerTerm", "ratingTerm", "songTerm", "movieArtistTerm", "showTerm", "movieTerm", "albumTerm"]
-    }
+    },
+    "limits" : ["-", "1", "10", "25", "50", "100" , "150", "200"]
 }
